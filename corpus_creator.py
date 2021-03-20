@@ -1,4 +1,4 @@
-import os
+import corpus_utils as utils
 import json
 import gzip
 
@@ -13,7 +13,7 @@ def create_corpus(gzip_source_dir, txt_source_dir, users_filename, tweets_filena
     :param tweets_filename: Name of output tweets masterlist file
     :return: None
     """
-    paths = get_file_paths(gzip_source_dir)
+    paths = utils.get_file_paths(gzip_source_dir)
 
     for path in paths:
         filename = path.split('/')[-1].split('.')[0]
@@ -23,21 +23,6 @@ def create_corpus(gzip_source_dir, txt_source_dir, users_filename, tweets_filena
     # Merge all the user and tweet files together into two masterlist files
     merge_files(txt_source_dir + 'users/', users_filename)
     merge_files(txt_source_dir + 'tweets/', tweets_filename)
-
-
-def get_file_paths(root_dir):
-    """ Retrieve paths of text data files.
-
-    :param root_dir:  Directory in which to look for files
-    :return:          List of file paths
-    """
-    file_paths = []
-    for subdir, dirs, files in os.walk(root_dir, topdown=True):
-        for file in files:
-            path = os.path.join(subdir, file)
-            file_paths.insert(0, path)
-
-    return file_paths
 
 
 def extract_tweets(source_file, users_filename, tweets_filename):
@@ -80,7 +65,7 @@ def merge_files(txt_files_dir, outfile_name):
     :param outfile_name:    Path to output file
     :return: None
     """
-    paths = sorted(get_file_paths(txt_files_dir))
+    paths = sorted(utils.get_file_paths(txt_files_dir))
 
     with open(outfile_name, 'w', encoding='utf-8') as outfile:
         for path in paths:
@@ -107,7 +92,7 @@ def split_files(target_dir, lines_per_file=40000, source_dir=None, source_file=N
     """
     smallfile = None
     if not single:
-        paths = get_file_paths(source_dir)
+        paths = utils.get_file_paths(source_dir)
         for path in paths:
             print(path)
             with open(path, 'r', encoding='utf-8') as bigfile:
