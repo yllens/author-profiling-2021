@@ -53,13 +53,13 @@ if __name__ == "__main__":
     tsv_dir = 'data/tsv'
 
     # Number of tweets and list of users with more than given number of tweets
-    num_tweets = 250
-    target_users = 'USERS-{}.txt'.format(num_tweets)
+    num_tweets = 500
+    target_users = 'data/user_lists/USERS-{}.txt'.format(num_tweets)
 
     # Paths to processed tsv files (masterlists)
-    merged_tsv = 'data/2021-ALL.tsv'
-    filtered_tsv = 'data/2021-{}_FILTERED.tsv'.format(num_tweets)
-    trimmed_tsv = 'data/2021-{}_TRIMMED.tsv'.format(num_tweets)
+    merged_tsv = 'data/tsv_files/2021-ALL.tsv'
+    filtered_tsv = 'data/tsv_files/2021-{}_FILTERED.tsv'.format(num_tweets)
+    trimmed_tsv = 'data/tsv_files/2021-{}_TRIMMED.tsv'.format(num_tweets)
 
     main(compile_corpus=False, preprocessing=False, merge=False, filt=True, trim=True)
 
