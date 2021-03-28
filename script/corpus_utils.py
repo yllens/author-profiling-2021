@@ -46,7 +46,7 @@ def extract_from_json(source_file, output_file):
 
     # Extract username and full text for each tweet, and zip the pairs together
     user_ids = [tweet.get('user').get('screen_name') for tweet in tweets]
-    tweet_texts = [tweet.get('full_text').replace('\n', '') for tweet in tweets]
+    tweet_texts = [tweet.get('full_text').replace('\n', ' _newline ') for tweet in tweets]
 
     tweets = list(zip(user_ids, tweet_texts))
 
@@ -194,10 +194,12 @@ def group_tweets(tweet_data):
     return tweets_dict
 
 
-def get_num_tweets(tweets_dict, num_tweets=1):
-    """ Find and extract users with more than one tweet.
+def get_num_tweets(tweets_dict, less_than=False, num_tweets=1):
+    """ Find and extract users with more than num_tweets number of tweets.
 
-    :param tweets_dict:
+    :param tweets_dict: Input dicionary of tweets grouped by user
+    :param less_than:   If True, users will be extracted for the number of tweets less than num_tweets
+                        If False (default), users will be extracted with more than num_tweets
     :param num_tweets:  Number of tweets to look for
 
     :return: List of tuples containing users with more than one tweet in tweet_data, along with the number of tweets
@@ -208,8 +210,12 @@ def get_num_tweets(tweets_dict, num_tweets=1):
 
         # If the provided number is a single integer
         if type(num_tweets) == int:
-            if len(item[1]) > num_tweets:
-                users.append((item[0], len(item[1])))
+            if less_than:
+                if len(item[1]) < num_tweets:
+                    users.append((item[0], len(item[1])))
+            else:
+                if len(item[1]) > num_tweets:
+                    users.append((item[0], len(item[1])))
 
         # If the provided number is a range of integers
         else:
@@ -232,36 +238,42 @@ def get_user_tweets(tweets_dict, user):
     return tweets_dict.get(user)
 
 
-def filter_by_num_tweets(tweets_dict, num_tweets=None, users_list=False):
+def filter_by_num_tweets(num_tweets, users_num_tweets, users_list_file=None):
     """ Filter users by their number of tweets and optionally create a .txt file containing a list
     of users with more than num_tweets tweets
 
-    :param tweets_dict: Input dictionary of tweets grouped by user
-    :param num_tweets:  Number of tweets to look for
-    :param users_list:  Generate list of users (False by default)
+    :param users_num_tweets: List of users with num_tweets number of tweets
+    :param num_tweets:       Number of tweets to look for (for formatting file name)
+    :param users_list_file:  Name of output file containing list of users with num_tweets tweets
     :return: None
+    """
+    # Get list of users with num_tweets in given range
+    users_list = [item[0] for item in users_num_tweets]
+
+    outfile_name = users_list_file.format(num_tweets)
+    with open(outfile_name, 'w') as f:
+        for user in users_list:
+            f.write(user)
+            f.write('\n')
+
+
+def get_stats(tweets_dict, users_num_tweets):
+    """ Return maximum, minimum, and median number of tweets for given tweet dictionary, the total number of
+    unique users in the dictionary, and a list of all users in the dictionary along with their number of tweets.
+
+    :param tweets_dict:      Input dictionary of tweets grouped by user
+    :param users_num_tweets: List of users with num_tweets number of tweets
+    :return:
     """
     # Find max and median number of tweets
     tweet_lengths = [len(tweet) for tweet in tweets_dict.values()]
-    print('Maximum length: ', np.max(tweet_lengths))
+    print('Maximum length: ', max(tweet_lengths))
     print('Median length:  ', np.median(sorted(set(tweet_lengths))))
+    print('Minimum length: ', min(tweet_lengths))
 
-    if num_tweets:
-        # # Check to see which users have a number of tweets within a certain range
-        # # num_tweets = utils.get_num_tweets(users_masterlist, tweets_masterlist, num_tweets=10)  # Single file
-        users_num_tweets = get_num_tweets(tweets_dict, num_tweets=num_tweets)
-        print('Num users:      ', len(users_num_tweets))
-        print('\n', users_num_tweets)
-
-        if users_list:
-            # Get list of users with num_tweets in given range
-            users_list = [item[0] for item in users_num_tweets]
-            # outfile_name = 'users_{}_{}'.format(str(num_range[0]), str(num_range[-1]))
-            outfile_name = 'USERS-{}.txt'.format(num_tweets)
-            with open(outfile_name, 'w') as f:
-                for user in users_list:
-                    f.write(user)
-                    f.write('\n')
+    # Check to see which users have a number of tweets within a certain range
+    print('Num users:      ', len(users_num_tweets))
+    print('\n', users_num_tweets)
 
 ###############################################################################################################
 #                                           EXTRACTING FILTERED DATA                                          #
