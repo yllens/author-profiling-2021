@@ -1,3 +1,8 @@
+""" Author:       yllens
+    Last edited:  1.04.2021
+    Description:  Main method for corpus_utils.py
+"""
+
 import corpus_utils as utils
 import time
 

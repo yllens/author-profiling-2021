@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-#
 # This script will walk through all the tweet id files and
 # hydrate them with twarc. The line oriented JSON files will
 # be placed right next to each tweet id file.
@@ -8,8 +7,7 @@
 # Note: you will need to install twarc, tqdm, and run twarc configure
 # from the command line to tell it your Twitter API keys.
 #
-# Source: https://github.com/echen102/COVID-19-TweetIDs
-#
+# Source & authors: https://github.com/echen102/COVID-19-TweetIDs
 
 import gzip
 import json

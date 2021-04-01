@@ -1,3 +1,9 @@
+""" Author:       yllens
+    Last edited:  1.04.2021
+    Description:  Generates a .tsv format corpus of usernames and tweets from input jsonl.gz files
+                    pulled from the Twitter API using hydrator.py
+"""
+
 from collections import defaultdict
 import csv
 import gzip
