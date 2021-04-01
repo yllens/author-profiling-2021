@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# This script will walk through all the tweet id files and
+# This corpus_generation will walk through all the tweet id files and
 # hydrate them with twarc. The line oriented JSON files will
 # be placed right next to each tweet id file.
 #

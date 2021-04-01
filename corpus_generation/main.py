@@ -10,7 +10,7 @@ start_time = time.process_time()
 
 
 def main(preprocessing=False, compile_corpus=False, merge=False, users_list=False, filt=False, trim=False, stats=False):
-    # Pre-processing for hydrate script (split big files into smaller ones)
+    # Pre-processing for hydrate corpus_generation (split big files into smaller ones)
     if preprocessing:
         utils.split_files(source_dir='../2021-02',
                           target_dir='../data/split/2021-02', lines_per_file=40000, single=False)
