@@ -25,7 +25,7 @@ def main(preprocessing=False, compile_corpus=False, merge=False, users_list=Fals
 
         # Get grouped dictionary of users and their tweets
         tweets_grouped = utils.group_tweets(tweet_data)
-        # print(utils.get_user_tweets(tweets_grouped, 'vegasnewsninja'))
+        # print(utils.get_user_tweets(tweets_grouped, ''))
 
         # List of users and their number of tweets
         users_num_tweets = utils.get_num_tweets(tweets_grouped, less_than=less_than, num_tweets=num_tweets)
@@ -44,7 +44,7 @@ def main(preprocessing=False, compile_corpus=False, merge=False, users_list=Fals
 
         # Get grouped dictionary of users and their tweets
         tweets_grouped = utils.group_tweets(tweet_data)
-        # print(utils.get_user_tweets(tweets_grouped, 'vegasnewsninja'))
+        # print(utils.get_user_tweets(tweets_grouped, ''))
 
         # Trim tweet_data based on the number of tweets of the user with the least amount of tweets
         utils.trim_tweets(tweets_grouped, trim_value=None, outfile_name=trimmed_tsv)
